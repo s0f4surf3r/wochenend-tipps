@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Wochenend-Tipps Berlin</title>
+
+<meta name="theme-color" content="#f2f4ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121c17" media="(prefers-color-scheme: dark)">
+<style>
+/* Layout: eine ruhige Spalte wie ein Fahrplan-Aushang – Kopf mit Wetter, drei große Tipp-Karten, darunter kompakte Liste, Archiv eingeklappt. */
+:root {
+  --bg: #f2f4ee;          /* Parkweg-Grau mit Grünstich */
+  --surface: #ffffff;
+  --ink: #1d3328;         /* Waldgrün, Text */
+  --muted: #5b6e63;
+  --line: #d9dfd4;
+  --accent: #f2b705;      /* Bahnsteig-Gelb */
+  --accent-ink: #2a2100;
+  --ok: #2f8a4c; --mid: #b7791f; --hot: #c2412d;
+  --display: ui-rounded, "SF Pro Rounded", -apple-system, "Helvetica Neue", sans-serif;
+  --body: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --r-card: 14px; --r-pill: 999px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121c17; --surface: #1a2721; --ink: #e8efe9; --muted: #9fb2a6; --line: #2c3c34;
+  --accent: #f5c431; --accent-ink: #231b00; --ok: #5cc27e; --mid: #e0a64a; --hot: #ee7a63; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121c17; --surface: #1a2721; --ink: #e8efe9; --muted: #9fb2a6; --line: #2c3c34;
+  --accent: #f5c431; --accent-ink: #231b00; --ok: #5cc27e; --mid: #e0a64a; --hot: #ee7a63; color-scheme: dark }
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.5; }
+.wrap { max-width: 720px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 56px; display: grid; gap: 32px; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+header { display: grid; gap: 12px; }
+.eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+h1 { font-family: var(--display); font-size: clamp(30px, 7vw, 42px); line-height: 1.1; margin: 0; text-wrap: balance; font-weight: 800; }
+.kurz { margin: 0; font-size: 18px; max-width: 60ch; }
+.wetter { display: flex; flex-wrap: wrap; gap: 8px; }
+.wetter span { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 6px 12px; font-size: 15px; font-variant-numeric: tabular-nums; }
+
+h2 { font-family: var(--display); font-size: 22px; margin: 0; font-weight: 700; }
+section { display: grid; gap: 16px; }
+
+.top { display: grid; gap: 16px; }
+.karte { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 20px; display: grid; gap: 12px; min-width: 0; }
+.kopf { display: flex; gap: 12px; align-items: flex-start; }
+.nr { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-family: var(--display); font-weight: 800; display: grid; place-items: center; font-size: 18px; }
+.karte h3 { font-family: var(--display); font-size: 21px; line-height: 1.25; margin: 4px 0 0; text-wrap: balance; }
+.wann { font-weight: 600; font-variant-numeric: tabular-nums; }
+.ort { color: var(--muted); margin: 0; }
+.warum { margin: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 14px; border-radius: var(--r-pill); padding: 4px 10px; border: 1px solid var(--line); background: var(--bg); white-space: nowrap; }
+.chip.frei { border-color: var(--ok); color: var(--ok); font-weight: 600; }
+.chip.reiz::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; background: var(--c); }
+.chip.gruen { --c: var(--ok); } .chip.gelb { --c: var(--mid); } .chip.rot { --c: var(--hot); }
+.hinweis { font-size: 14px; color: var(--mid); margin: 0; }
+.tipp-reiz { font-size: 15px; color: var(--muted); margin: 0; }
+.aktionen { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--line); }
+.btn.haupt { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+@media (hover: hover) { .btn:hover { filter: brightness(.96); } }
+.btn:active { transform: translateY(1px); }
+
+.liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); }
+.liste li { padding: 14px 16px; display: grid; grid-template-columns: 28px 1fr; gap: 4px 12px; border-top: 1px solid var(--line); min-width: 0; }
+.liste li:first-child { border-top: 0; }
+.liste .n { font-family: var(--display); font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; }
+.liste .t { font-weight: 600; }
+.liste .t a { text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.liste .m { grid-column: 2; color: var(--muted); font-size: 15px; }
+
+.feedback { background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r-card); padding: 16px 20px; font-size: 15px; }
+.feedback p { margin: 0; }
+details { border-top: 1px solid var(--line); padding-top: 16px; }
+summary { cursor: pointer; font-family: var(--display); font-weight: 700; font-size: 18px; min-height: 44px; display: flex; align-items: center; }
+.archiv { display: grid; gap: 16px; margin-top: 8px; }
+.archiv h4 { margin: 0 0 4px; font-size: 16px; }
+.archiv ul { margin: 0; padding-left: 20px; color: var(--muted); font-size: 15px; }
+footer { color: var(--muted); font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+</head>
+<body>
+<div class="wrap" id="app">
+  <header>
+    <div class="eyebrow" id="eyebrow">Wochenend-Tipps</div>
+    <h1 id="titel">Lade Tipps …</h1>
+    <p class="kurz" id="kurz"></p>
+    <div class="wetter" id="wetter"></div>
+  </header>
+  <section aria-labelledby="h-top"><h2 id="h-top">Die besten drei</h2><div class="top" id="top"></div></section>
+  <section aria-labelledby="h-mehr" id="mehr-sec"><h2 id="h-mehr">Außerdem</h2><ul class="liste" id="mehr"></ul></section>
+  <div class="feedback"><p id="feedback-text"><strong>Wie war's?</strong> Sag Jochen Bescheid, z. B. „1 war super, 3 zu voll“. Die Tipps werden jede Woche neu gesucht und lernen aus dem Feedback.</p></div>
+  <details id="archiv-box"><summary>Frühere Wochenenden</summary><div class="archiv" id="archiv"></div></details>
+  <footer id="stand"></footer>
+</div>
+
+<script type="application/json" id="daten">{
+ "aktuell": {
+  "eyebrow": "Wochenend-Tipps · Feiertag am Samstag",
+  "titel": "Sa 3. – So 4. Oktober",
+  "kurz": "Heute ab 16 Uhr zum Rummel, morgen Züge im Technikmuseum und Musik am Gendarmenmarkt.",
+  "wetter": [
+   {
+    "tag": "Sa",
+    "temp": 19,
+    "text": "trocken"
+   },
+   {
+    "tag": "So",
+    "temp": 19,
+    "text": "trocken"
+   }
+  ],
+  "top": [
+   {
+    "nr": 1,
+    "titel": "Berliner Herbst Rummel",
+    "wann": "Sa 14–23 Uhr · So 14–22 Uhr",
+    "ort": "Zentraler Festplatz, Kurt-Schumacher-Damm 207",
+    "adresse": "Kurt-Schumacher-Damm 207, 13405 Berlin",
+    "weg": {
+     "minuten": 35,
+     "art": "weit"
+    },
+    "kosten": "Eintritt frei · Fahrten extra",
+    "frei": false,
+    "reiz": "rot",
+    "reiz_tipp": "Laut und voll, aber genau sein Ding. Break Dance und Chaos Airport sind dabei.",
+    "warum": "Fahrgeschäfte sind die große Liebe, und du steuerst das Budget selbst.",
+    "link": "https://volksfest-berlin.de/",
+    "hinweis": "Preise pro Fahrt stehen nicht auf der Seite – vor Ort schauen."
+   },
+   {
+    "nr": 2,
+    "titel": "Kleine Bahn ganz groß – Modell Anhalter Bahnhof",
+    "wann": "So 11–15:30 Uhr",
+    "ort": "Deutsches Technikmuseum, Lokschuppen II, Trebbiner Str. 9",
+    "adresse": "Trebbiner Str. 9, 10963 Berlin",
+    "weg": {
+     "minuten": 18,
+     "art": "kindersitz"
+    },
+    "kosten": "Museumseintritt · berlinpass fragen",
+    "frei": false,
+    "reiz": "gruen",
+    "reiz_tipp": "Danach in den Lokschuppen mit den echten Loks.",
+    "warum": "Züge aus den 1930ern fahren durchs Modell – für einen Zug-Fan das Wochenend-Highlight.",
+    "link": "https://www.museumsportal-berlin.de/en/events/kleine-bahn-ganz-gross-teilansicht-des-eisenbahnmodells-des-anhalter-bahnhofs-im-massstab-1-87-im-zustand-von-1939-der-ausschnitt-zeigt-den-ort-des-heutigen-museums-den-anhalter-steg-den-landwehrkanal-fahrzeuge-und-das-schienennetz/"
+   },
+   {
+    "nr": 3,
+    "titel": "Tag der offenen Tür im Konzerthaus",
+    "wann": "So 11–17 Uhr · Peter und der Wolf 12:30 Uhr",
+    "ort": "Konzerthaus Berlin, Gendarmenmarkt",
+    "adresse": "Gendarmenmarkt, 10117 Berlin",
+    "weg": {
+     "minuten": 10,
+     "art": "nah"
+    },
+    "kosten": "kostenlos",
+    "frei": true,
+    "reiz": "gelb",
+    "reiz_tipp": "Instrumenten-Karussell und Klang-Memory zum Ausprobieren, das Konzert hat einen festen Ablauf.",
+    "warum": "Musik zum Mitmachen, ganz nah, kostet nichts.",
+    "link": "https://www.konzerthaus.de/en/open-house"
+   }
+  ],
+  "weitere": [
+   {
+    "nr": 4,
+    "titel": "Vokalhelden Sing-Along",
+    "wann": "So 14 und 15 Uhr, je 30 Min",
+    "ort": "Gendarmenmarkt, vor dem Konzerthaus",
+    "kosten": "kostenlos",
+    "link": "https://www.kinderkulturkalender-berlin.de/angebot/young-euro-classic-vokalhelden-sing-along"
+   },
+   {
+    "nr": 5,
+    "titel": "Kiezflohmarkt an der Verkehrsschule",
+    "wann": "So 12–16 Uhr",
+    "ort": "Wassertorplatz, Kreuzberg",
+    "kosten": "Eintritt unklar",
+    "link": "https://quartiersmanagement-wassertorplatz.de/Aktuelles/Veranstaltungen/",
+    "hinweis": "unbestätigt"
+   },
+   {
+    "nr": 6,
+    "titel": "Pixelwelten – Gaming trifft Making",
+    "wann": "Sa + So 12–18 Uhr",
+    "ort": "FEZ Wuhlheide (weiter weg)",
+    "kosten": "ca. 10 € für zwei",
+    "link": "https://www.kinderkulturkalender-berlin.de/angebot/pixelwelten"
+   },
+   {
+    "nr": 7,
+    "titel": "Schneewittchen (Kindertheater)",
+    "wann": "Sa 16 Uhr",
+    "ort": "Varia Vineta, Pankow",
+    "kosten": "Preis unklar",
+    "link": "https://www.berlin.de/kultur-und-tickets/tipps/kinder/wochenende/",
+    "hinweis": "Detailseite nicht geprüft"
+   }
+  ],
+  "stand": "Sa 3.10.2026, 14:40 Uhr",
+  "quellen": "7 Seiten abgerufen, 8 Suchen"
+ },
+ "archiv": []
+}</script>
+<script>
+(function () {
+  var d;
+  try { d = JSON.parse(document.getElementById('daten').textContent); } catch (e) { document.getElementById('titel').textContent = 'Daten fehlen'; return; }
+  var a = d.aktuell || {};
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function link(href, cls, text) { var x = el('a', cls, text); x.href = href; x.target = '_blank'; x.rel = 'noopener'; return x; }
+  var WEG = { nah: 'nah · auch mit eigenem Rad', kindersitz: 'Kindersitz', weit: 'weiter weg' };
+  var REIZ = { gruen: 'ruhig', gelb: 'mittel', rot: 'laut & voll' };
+
+  document.getElementById('eyebrow').textContent = a.eyebrow || 'Wochenend-Tipps';
+  document.getElementById('titel').textContent = a.titel || '';
+  document.getElementById('kurz').textContent = a.kurz || '';
+  var w = document.getElementById('wetter');
+  (a.wetter || []).forEach(function (t) { w.appendChild(el('span', null, t.tag + ' ' + t.temp + ' °C · ' + t.text)); });
+
+  function chips(t) {
+    var c = el('div', 'chips');
+    if (t.kosten) c.appendChild(el('span', 'chip' + (t.frei ? ' frei' : ''), t.kosten));
+    if (t.weg) c.appendChild(el('span', 'chip', '🚲 ' + (t.weg.minuten ? 'ca. ' + t.weg.minuten + ' Min · ' : '') + (WEG[t.weg.art] || t.weg.art)));
+    if (t.reiz) c.appendChild(el('span', 'chip reiz ' + t.reiz, REIZ[t.reiz] || t.reiz));
+    return c;
+  }
+  var top = document.getElementById('top');
+  (a.top || []).forEach(function (t) {
+    var k = el('article', 'karte');
+    var kopf = el('div', 'kopf'); kopf.appendChild(el('div', 'nr', t.nr));
+    var tt = el('div'); tt.style.minWidth = '0';
+    tt.appendChild(el('div', 'wann', t.wann)); tt.appendChild(el('h3', null, t.titel)); kopf.appendChild(tt); k.appendChild(kopf);
+    if (t.ort) k.appendChild(el('p', 'ort', t.ort));
+    k.appendChild(chips(t));
+    if (t.warum) k.appendChild(el('p', 'warum', t.warum));
+    if (t.reiz_tipp) k.appendChild(el('p', 'tipp-reiz', t.reiz_tipp));
+    if (t.hinweis) k.appendChild(el('p', 'hinweis', '⚠ ' + t.hinweis));
+    var ak = el('div', 'aktionen');
+    if (t.link) ak.appendChild(link(t.link, 'btn haupt', 'Zur Veranstaltung'));
+    if (t.adresse) ak.appendChild(link('https://www.google.com/maps/dir/?api=1&travelmode=bicycling&destination=' + encodeURIComponent(t.adresse), 'btn', 'Route mit dem Rad'));
+    k.appendChild(ak);
+    top.appendChild(k);
+  });
+  var mehr = document.getElementById('mehr');
+  (a.weitere || []).forEach(function (t) {
+    var li = el('li'); li.appendChild(el('span', 'n', t.nr));
+    var ti = el('span', 't'); if (t.link) ti.appendChild(link(t.link, null, t.titel)); else ti.textContent = t.titel; li.appendChild(ti);
+    var meta = [t.wann, t.ort, t.kosten].filter(Boolean).join(' · ');
+    if (t.hinweis) meta += ' · ⚠ ' + t.hinweis;
+    li.appendChild(el('span', 'm', meta)); mehr.appendChild(li);
+  });
+  if (!(a.weitere || []).length) document.getElementById('mehr-sec').hidden = true;
+  var ar = document.getElementById('archiv');
+  (d.archiv || []).forEach(function (w) {
+    var b = el('div'); b.appendChild(el('h4', null, w.titel)); var ul = el('ul');
+    (w.tipps || []).forEach(function (t) { ul.appendChild(el('li', null, t)); }); b.appendChild(ul); ar.appendChild(b);
+  });
+  if (!(d.archiv || []).length) document.getElementById('archiv-box').hidden = true;
+  document.getElementById('stand').textContent = a.stand ? 'Stand: ' + a.stand + (a.quellen ? ' · ' + a.quellen : '') : '';
+})();
+</script>
+
+</body>
+</html>
