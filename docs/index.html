@@ -41,6 +41,11 @@ header { display: grid; gap: 12px; }
 .eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 h1 { font-family: var(--display); font-size: clamp(30px, 7vw, 42px); line-height: 1.1; margin: 0; text-wrap: balance; font-weight: 800; }
 .kurz { margin: 0; font-size: 18px; max-width: 60ch; }
+.kopfbild { display: block; margin-bottom: 8px; }
+.kopfbild img { display: block; width: 100%; height: auto; border-radius: var(--r-card); background: #c9d3bd; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .kopfbild img { filter: brightness(.85); } }
+:root[data-theme="dark"] .kopfbild img { filter: brightness(.85); }
+.wetter span, .wann, .karte h3, .ort, .warum, .liste .m { overflow-wrap: anywhere; }
 .wetter { display: flex; flex-wrap: wrap; gap: 8px; }
 .wetter span { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 6px 12px; font-size: 15px; font-variant-numeric: tabular-nums; }
 
@@ -48,7 +53,7 @@ h2 { font-family: var(--display); font-size: 22px; margin: 0; font-weight: 700; 
 section { display: grid; gap: 16px; }
 
 .top { display: grid; gap: 16px; }
-.karte { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 20px; display: grid; gap: 12px; min-width: 0; }
+.karte { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 20px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; }
 .kopf { display: flex; gap: 12px; align-items: flex-start; }
 .nr { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-family: var(--display); font-weight: 800; display: grid; place-items: center; font-size: 18px; }
 .karte h3 { font-family: var(--display); font-size: 21px; line-height: 1.25; margin: 4px 0 0; text-wrap: balance; }
@@ -56,7 +61,7 @@ section { display: grid; gap: 16px; }
 .ort { color: var(--muted); margin: 0; }
 .warum { margin: 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { font-size: 14px; border-radius: var(--r-pill); padding: 4px 10px; border: 1px solid var(--line); background: var(--bg); white-space: nowrap; }
+.chip { font-size: 14px; border-radius: 14px; padding: 4px 10px; border: 1px solid var(--line); background: var(--bg); max-width: 100%; overflow-wrap: anywhere; }
 .chip.frei { border-color: var(--ok); color: var(--ok); font-weight: 600; }
 .chip.reiz::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; background: var(--c); }
 .chip.gruen { --c: var(--ok); } .chip.gelb { --c: var(--mid); } .chip.rot { --c: var(--hot); }
@@ -69,7 +74,7 @@ section { display: grid; gap: 16px; }
 .btn:active { transform: translateY(1px); }
 
 .liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); }
-.liste li { padding: 14px 16px; display: grid; grid-template-columns: 28px 1fr; gap: 4px 12px; border-top: 1px solid var(--line); min-width: 0; }
+.liste li { padding: 14px 16px; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 4px 12px; border-top: 1px solid var(--line); min-width: 0; }
 .liste li:first-child { border-top: 0; }
 .liste .n { font-family: var(--display); font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; }
 .liste .t { font-weight: 600; }
@@ -91,6 +96,10 @@ footer { color: var(--muted); font-size: 13px; }
 <body>
 <div class="wrap" id="app">
   <header>
+    <picture class="kopfbild">
+      <source media="(min-width: 600px)" srcset="kopf-breit.webp" width="1536" height="672">
+      <img src="kopf-schmal.webp" width="1184" height="864" alt="Illustration: Vater und Kind auf dem E-Bike im Herbstpark, dahinter Fernsehturm, S-Bahn, Riesenrad und Spielplatz">
+    </picture>
     <div class="eyebrow" id="eyebrow">Wochenend-Tipps</div>
     <h1 id="titel">Lade Tipps …</h1>
     <p class="kurz" id="kurz"></p>
