@@ -126,7 +126,6 @@ footer { color: var(--muted); font-size: 13px; }
     </picture>
     <div class="eyebrow" id="eyebrow">Wochenend-Tipps</div>
     <h1 id="titel">Lade Tipps …</h1>
-    <p class="kurz" id="kurz"></p>
     <div class="wetter" id="wetter"></div>
   </header>
   <nav class="filter" id="filter" aria-label="Tipps filtern" hidden><div class="filter-reihe" id="filter-reihe"></div><p class="filter-info" id="filter-info" aria-live="polite"></p></nav>
@@ -494,7 +493,6 @@ footer { color: var(--muted); font-size: 13px; }
 
   document.getElementById('eyebrow').textContent = a.eyebrow || 'Wochenend-Tipps';
   document.getElementById('titel').textContent = a.titel || '';
-  document.getElementById('kurz').textContent = a.kurz || '';
   var w = document.getElementById('wetter');
   (a.wetter || []).forEach(function (t) { w.appendChild(el('span', null, t.tag + ' ' + t.temp + ' °C · ' + t.text)); });
 
