@@ -4,6 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="description" content="Sa 17. – So 18. Oktober: günstige Tipps für Familien in Berlin – jede Woche neu.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Wochenend-Tipps Berlin">
+<meta property="og:description" content="Sa 17. – So 18. Oktober: günstige Tipps für Familien in Berlin – jede Woche neu.">
+<meta property="og:url" content="https://s0f4surf3r.github.io/wochenend-tipps/">
+<meta property="og:image" content="https://s0f4surf3r.github.io/wochenend-tipps/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
 <title>Wochenend-Tipps Berlin</title>
 
 <meta name="theme-color" content="#f2f4ee" media="(prefers-color-scheme: light)">
@@ -91,6 +104,15 @@ summary { cursor: pointer; font-family: var(--display); font-weight: 700; font-s
 .archiv h4 { margin: 0 0 4px; font-size: 16px; }
 .archiv ul { margin: 0; padding-left: 20px; color: var(--muted); font-size: 15px; }
 footer { color: var(--muted); font-size: 13px; }
+.filter { display: grid; gap: 10px; }
+.filter-reihe { display: flex; flex-wrap: wrap; gap: 8px; }
+.fchip { font: inherit; font-size: 15px; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.fchip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+@media (hover: hover) { .fchip:hover { border-color: var(--ink); } }
+.fchip:active { transform: translateY(1px); }
+.filter-info { font-size: 14px; color: var(--muted); margin: 0; }
+.filter-info button { font: inherit; color: inherit; background: none; border: 0; text-decoration: underline; cursor: pointer; padding: 0; }
+.leer { color: var(--muted); margin: 0; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
@@ -107,7 +129,8 @@ footer { color: var(--muted); font-size: 13px; }
     <p class="kurz" id="kurz"></p>
     <div class="wetter" id="wetter"></div>
   </header>
-  <section aria-labelledby="h-top"><h2 id="h-top">Die besten drei</h2><div class="top" id="top"></div></section>
+  <nav class="filter" id="filter" aria-label="Tipps filtern" hidden><div class="filter-reihe" id="filter-reihe"></div><p class="filter-info" id="filter-info" aria-live="polite"></p></nav>
+  <section aria-labelledby="h-top" id="top-sec"><h2 id="h-top">Die besten drei</h2><div class="top" id="top"></div></section>
   <section aria-labelledby="h-mehr" id="mehr-sec"><h2 id="h-mehr">Außerdem</h2><ul class="liste" id="mehr"></ul></section>
   <section aria-labelledby="h-kino" id="kino-sec" hidden><h2 id="h-kino">🎬 Kinderkino</h2><ul class="liste kino" id="kino"></ul></section>
   <div class="feedback"><p id="feedback-text"><strong>Wie war's?</strong> Sag Jochen Bescheid, z. B. „1 war super, 3 zu voll“. Die Tipps werden jede Woche neu gesucht und lernen aus dem Feedback.</p></div>
@@ -149,7 +172,12 @@ footer { color: var(--muted); font-size: 13px; }
     "reiz_tipp": "Laut und trubelig, am frühen Nachmittag ruhiger. Sonntag ist laut Prognose trocken (Samstag eher Schauer möglich).",
     "warum": "Das Highlight für Fahrgeschäfte: Kindereisenbahn Mini Express, Kinderkarussell, Pirateninsel, Chaos Airport, Riesenschaukel HyperX und Fly Over. Überdachte Biergärten bei Wetterwechsel.",
     "link": "https://volksfest-berlin.de/",
-    "hinweis": "kennt ihr schon · Familientag oder Rabatt nicht gefunden · Ende der Saison: 25.10."
+    "hinweis": "kennt ihr schon · Familientag oder Rabatt nicht gefunden · Ende der Saison: 25.10.",
+    "tags": [
+     "laut",
+     "draussen",
+     "rollt"
+    ]
    },
    {
     "nr": 2,
@@ -167,7 +195,13 @@ footer { color: var(--muted); font-size: 13px; }
     "reiz_tipp": "Ruhiger Rahmen mit Stationen. Samstag nach Einbruch der Dunkelheit fahren beleuchtete Modellschiffe.",
     "warum": "Alles, was rollt, zum Selbersteuern: Kinder fahren Geländewagen und Baumaschinen über Parcours und können am Ende einen RC-Führerschein machen. Feste Stationen, klarer Ablauf.",
     "link": "https://www.berlin.de/en/events/7806291-2842498-schoeneberger-modellbautage.en.html",
-    "hinweis": "Zeiten und Eintritt auf berlin.de bestätigt · U-Bahn U7/U4 in 300 m (Fahrkarte nötig)"
+    "hinweis": "Zeiten und Eintritt auf berlin.de bestätigt · U-Bahn U7/U4 in 300 m (Fahrkarte nötig)",
+    "tags": [
+     "ruhig",
+     "drinnen",
+     "rollt",
+     "kostenlos"
+    ]
    },
    {
     "nr": 3,
@@ -185,7 +219,12 @@ footer { color: var(--muted); font-size: 13px; }
     "reiz_tipp": "Ruhige Fahrt mit festem Fahrplan, von Kindern und Jugendlichen mitbetrieben. Warm anziehen.",
     "warum": "Eine echte kleine Eisenbahn, bei der Kinder als Schaffner mitarbeiten – für einen Zug-Fan fast besser als Museum. Mit S3 bis Wuhlheide (Fahrkarte nötig) oder lange Radtour.",
     "link": "https://www.parkeisenbahn.de/",
-    "hinweis": "Fahrbetrieb laut Startseite für Sa 17.10. und So 18.10.; Dampflok nicht bestätigt · Fahrpreise-Seite beim Abruf nicht erreichbar"
+    "hinweis": "Fahrbetrieb laut Startseite für Sa 17.10. und So 18.10.; Dampflok nicht bestätigt · Fahrpreise-Seite beim Abruf nicht erreichbar",
+    "tags": [
+     "ruhig",
+     "draussen",
+     "rollt"
+    ]
    }
   ],
   "weitere": [
@@ -196,7 +235,13 @@ footer { color: var(--muted); font-size: 13px; }
     "ort": "Park am Gleisdreieck (Ostpark, Eingang Hornstraße)",
     "kosten": "kostenlos",
     "link": "https://www.visitberlin.de/de/spielplatz-stangenwald",
-    "hinweis": "Ausflugsziel · unbestätigt: Seite lud ohne Beschreibung, Angaben aus Suchtreffer"
+    "hinweis": "Ausflugsziel · unbestätigt: Seite lud ohne Beschreibung, Angaben aus Suchtreffer",
+    "tags": [
+     "sport",
+     "draussen",
+     "kostenlos",
+     "nah"
+    ]
    },
    {
     "nr": 5,
@@ -205,7 +250,13 @@ footer { color: var(--muted); font-size: 13px; }
     "ort": "Trebbiner Straße 9, Kreuzberg",
     "kosten": "Kinder unter 18 frei · Erwachsene 15 € online (ermäßigt 9 €, u. a. mit Grundsicherungsgeld-Nachweis)",
     "link": "https://technikmuseum.berlin/besuch/tickets",
-    "hinweis": "Modellbahn-Termin ⚠ unbestätigt (Detailseite 404) · direkt neben Nr. 4 kombinierbar · Plan B bei Regen"
+    "hinweis": "Modellbahn-Termin ⚠ unbestätigt (Detailseite 404) · direkt neben Nr. 4 kombinierbar · Plan B bei Regen",
+    "tags": [
+     "ruhig",
+     "drinnen",
+     "rollt",
+     "nah"
+    ]
    },
    {
     "nr": 6,
@@ -214,7 +265,12 @@ footer { color: var(--muted); font-size: 13px; }
     "ort": "Eisbahn im Sportforum Hohenschönhausen, Konrad-Wolf-Straße 39",
     "kosten": "kostenlos",
     "link": "https://dayt.events/event/familiensportfest-lichtenberg-dayt-61383?termin=192275",
-    "hinweis": "Fußball nicht ausdrücklich genannt · Termine auf den Seiten widersprüchlich, Sa laut dayt"
+    "hinweis": "Fußball nicht ausdrücklich genannt · Termine auf den Seiten widersprüchlich, Sa laut dayt",
+    "tags": [
+     "sport",
+     "drinnen",
+     "kostenlos"
+    ]
    },
    {
     "nr": 7,
@@ -223,7 +279,12 @@ footer { color: var(--muted); font-size: 13px; }
     "ort": "East Side Mall, Tamara-Danz-Straße 11",
     "kosten": "kostenlos",
     "link": "https://www.kinderkulturkalender-berlin.de/angebot/akkordeon-fuer-alle",
-    "hinweis": "Anmeldung über Umfrage-Link auf der Detailseite nötig"
+    "hinweis": "Anmeldung über Umfrage-Link auf der Detailseite nötig",
+    "tags": [
+     "musik",
+     "drinnen",
+     "kostenlos"
+    ]
    },
    {
     "nr": 8,
@@ -232,10 +293,100 @@ footer { color: var(--muted); font-size: 13px; }
     "ort": "Archenhold-Sternwarte, Alt-Treptow 1, 12435 Berlin",
     "kosten": "12 € · ermäßigt 8 € (pro Person oder Gruppe unklar)",
     "link": "https://www.berlin.de/tickets/vermischtes/besuch-im-sternenhaus/2026-10-17-n-a-5b134467-8c69-40cd-9891-bef727791f80/",
-    "hinweis": "Neu entdecken: Fest geführter Ablauf zum Staunen und Fragen, 45 Minuten, ruhig · Alter und Anmeldung nicht angegeben · evtl. über Budget"
+    "hinweis": "Neu entdecken: Fest geführter Ablauf zum Staunen und Fragen, 45 Minuten, ruhig · Alter und Anmeldung nicht angegeben · evtl. über Budget",
+    "tags": [
+     "ruhig",
+     "drinnen",
+     "neu",
+     "nah"
+    ]
+   },
+   {
+    "nr": 9,
+    "titel": "Zaubershow – Einführung in die Zauberkunst (20 Min)",
+    "wann": "Sa 12:30–12:50",
+    "ort": "Magicum, Große Hamburger Str. 17 (Mitte, nah)",
+    "kosten": "6 €",
+    "link": "https://dayt.events/event/zaubershow-eine-einfuehrung-in-die-wunderbare-welt-der-zauberkunst-dayt-23122",
+    "hinweis": "Neu entdecken · kurz, zum Mitmachen, klarer Ablauf",
+    "tags": [
+     "drinnen",
+     "neu",
+     "nah"
+    ]
+   },
+   {
+    "nr": 10,
+    "titel": "Boulderschein für Kinder",
+    "wann": "Sa 14:30–16 Uhr",
+    "ort": "Das Elektra, Gustav-Meyer-Allee 25 (Wedding)",
+    "kosten": "Preis unklar",
+    "link": "https://dayt.events/event/boulderschein-fuer-kinder-dayt-20346",
+    "hinweis": "Klettern · Anmeldung und Mindestalter vorher prüfen",
+    "tags": [
+     "sport",
+     "drinnen"
+    ]
+   },
+   {
+    "nr": 11,
+    "titel": "Circus Berolina",
+    "wann": "So 15 Uhr",
+    "ort": "Circuspalast, Kniprodestraße 14 (Friedrichshain)",
+    "kosten": "ab 20 €",
+    "link": "https://www.berlin.de/tickets/show/circus-berolina-in-berlin/2026-10-18-circus-berolina-4ee0cceb-1f91-4b96-9ce4-15532efc3e6b/",
+    "hinweis": "über Budget · mit Tiernummern",
+    "tags": [
+     "laut",
+     "drinnen"
+    ]
+   },
+   {
+    "nr": 12,
+    "titel": "Family Open Lab: 3D-Druck – eigene Objekte entwerfen",
+    "wann": "So 10–14 Uhr",
+    "ort": "Futurium, Alexanderufer 2 (Mitte)",
+    "kosten": "Preis unklar",
+    "link": "https://dayt.events/event/family-open-lab-produktgestaltung-3d-druck-dayt-45273",
+    "hinweis": "Neu entdecken · Selberbauen",
+    "tags": [
+     "ruhig",
+     "drinnen",
+     "neu",
+     "nah"
+    ]
+   },
+   {
+    "nr": 13,
+    "titel": "Familienführung „Dinosaurier!“",
+    "wann": "So 12:30–13:15 Uhr",
+    "ort": "Museum für Naturkunde, Invalidenstraße 43",
+    "kosten": "5 €",
+    "link": "https://www.museumfuernaturkunde.berlin/programm/veranstaltungen/detail/familienfuehrung-dinosaurier/",
+    "hinweis": "Plan B drinnen",
+    "tags": [
+     "ruhig",
+     "drinnen",
+     "nah"
+    ]
+   },
+   {
+    "nr": 14,
+    "titel": "Familienführung „Unser Klangschiff“ – Philharmonie von innen",
+    "wann": "Sa 14 Uhr",
+    "ort": "Philharmonie, Herbert-von-Karajan-Straße 1",
+    "kosten": "10 €",
+    "link": "https://www.berliner-philharmoniker.de/ihr-besuch/fuehrungen/familienfuehrungen-unser-klangschiff/",
+    "hinweis": "Musik",
+    "tags": [
+     "ruhig",
+     "drinnen",
+     "musik",
+     "nah"
+    ]
    }
   ],
-  "stand": "Sa 17.10.2026, 9:30 Uhr",
+  "stand": "Sa 17.10.2026, 9:30 Uhr · ergänzt 10 Uhr",
   "quellen": "volksfest-berlin, berlin.de, kinderkulturkalender, dayt, parkeisenbahn.de, technikmuseum.berlin, BerlinMagazine, WebSearch; Wetter Open-Meteo",
   "kino": [
    {
@@ -243,28 +394,48 @@ footer { color: var(--muted); font-size: 13px; }
     "titel": "Shaun das Schaf – Spuk im Kürbisfeld",
     "ort": "Moviemento, Kottbusser Damm 22 (Kreuzberg, nah)",
     "kosten": "Preis bei Kinoheld",
-    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/"
+    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/",
+    "tags": [
+     "drinnen",
+     "ruhig",
+     "nah"
+    ]
    },
    {
     "wann": "Sa 10:30 und 14:30 · So 12:00 und 14:30",
     "titel": "Bibi Blocksberg – Die total verhexte Zeitreise",
     "ort": "Moviemento, Kreuzberg",
     "kosten": "Preis bei Kinoheld",
-    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/"
+    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/",
+    "tags": [
+     "drinnen",
+     "ruhig",
+     "nah"
+    ]
    },
    {
     "wann": "Sa 12:30 und 16:15 · So 14:00",
     "titel": "Monster Mia",
     "ort": "Moviemento, Kreuzberg",
     "kosten": "Preis bei Kinoheld",
-    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/"
+    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/",
+    "tags": [
+     "drinnen",
+     "ruhig",
+     "nah"
+    ]
    },
    {
     "wann": "Sa 14:30",
     "titel": "Lilly und die Kängurus",
     "ort": "Moviemento, Kreuzberg",
     "kosten": "Preis bei Kinoheld",
-    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/"
+    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/",
+    "tags": [
+     "drinnen",
+     "ruhig",
+     "nah"
+    ]
    },
    {
     "wann": "So 11:00",
@@ -272,7 +443,11 @@ footer { color: var(--muted); font-size: 13px; }
     "ort": "Toni, Antonplatz 1 (Weißensee, weiter weg)",
     "kosten": "3,30 €",
     "link": "https://dayt.events/event/spatzenkino-am-wochenende-klingende-geschichten-d-ab-0-dayt-46789",
-    "hinweis": "eher für Kleinere, sehr sanft"
+    "hinweis": "eher für Kleinere, sehr sanft",
+    "tags": [
+     "drinnen",
+     "ruhig"
+    ]
    }
   ]
  },
@@ -365,6 +540,53 @@ footer { color: var(--muted); font-size: 13px; }
     li.appendChild(el('span', 'm', meta)); kino.appendChild(li);
   });
   if ((a.kino || []).length) document.getElementById('kino-sec').hidden = false;
+  // Filter: Schlagworte aus "tags" plus automatisch aus Kosten, Reiz und Weg
+  var FILTER = [['kostenlos','Kostenlos'],['sport','Sportlich'],['ruhig','Ruhig'],['laut','Laut'],['drinnen','Drinnen'],['draussen','Draußen'],['nah','Nah'],['rollt','Züge & Rollen'],['musik','Musik'],['neu','Neu entdecken']];
+  function schlagworte(t) {
+    var s = (t.tags || []).slice();
+    if (t.frei || /^kostenlos/i.test(t.kosten || '')) s.push('kostenlos');
+    if (t.reiz === 'gruen') s.push('ruhig'); if (t.reiz === 'rot') s.push('laut');
+    if (t.weg && t.weg.art === 'nah') s.push('nah');
+    if (/neu entdecken/i.test(t.hinweis || '')) s.push('neu');
+    return s;
+  }
+  var eintraege = [];
+  [['top', a.top], ['mehr', a.weitere], ['kino', a.kino]].forEach(function (paar) {
+    var kinder = document.getElementById(paar[0]).children;
+    (paar[1] || []).forEach(function (t, i) { if (kinder[i]) eintraege.push({ el: kinder[i], s: schlagworte(t), liste: paar[0] }); });
+  });
+  var aktiv = [];
+  var reihe = document.getElementById('filter-reihe'), info = document.getElementById('filter-info');
+  var vorhanden = FILTER.filter(function (f) { return eintraege.some(function (e) { return e.s.indexOf(f[0]) >= 0; }); });
+  function anwenden() {
+    var n = 0;
+    eintraege.forEach(function (e) {
+      var ok = aktiv.every(function (k) { return e.s.indexOf(k) >= 0; });
+      e.el.hidden = !ok; if (ok) n++;
+    });
+    [['top', 'top-sec'], ['mehr', 'mehr-sec'], ['kino', 'kino-sec']].forEach(function (p) {
+      var sec = document.getElementById(p[1]), hat = eintraege.some(function (e) { return e.liste === p[0]; });
+      if (hat) sec.hidden = !eintraege.some(function (e) { return e.liste === p[0] && !e.el.hidden; });
+    });
+    info.textContent = '';
+    if (aktiv.length) {
+      info.appendChild(document.createTextNode(n ? n + ' von ' + eintraege.length + ' Tipps passen · ' : 'Nichts passt zu dieser Kombination · '));
+      var b = el('button', null, 'alle zeigen'); b.type = 'button';
+      b.onclick = function () { aktiv = []; Array.prototype.forEach.call(reihe.children, function (c) { c.setAttribute('aria-pressed', 'false'); }); anwenden(); };
+      info.appendChild(b);
+    }
+  }
+  if (vorhanden.length > 1) {
+    vorhanden.forEach(function (f) {
+      var b = el('button', 'fchip', f[1]); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+      b.onclick = function () {
+        var i = aktiv.indexOf(f[0]); if (i >= 0) aktiv.splice(i, 1); else aktiv.push(f[0]);
+        b.setAttribute('aria-pressed', i >= 0 ? 'false' : 'true'); anwenden();
+      };
+      reihe.appendChild(b);
+    });
+    document.getElementById('filter').hidden = false;
+  }
   var ar = document.getElementById('archiv');
   (d.archiv || []).forEach(function (w) {
     var b = el('div'); b.appendChild(el('h4', null, w.titel)); var ul = el('ul');
