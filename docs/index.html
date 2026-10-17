@@ -80,6 +80,8 @@ section { display: grid; gap: 16px; }
 .liste .t { font-weight: 600; }
 .liste .t a { text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .liste .m { grid-column: 2; color: var(--muted); font-size: 15px; }
+.liste.kino li { grid-template-columns: minmax(0, 1fr); }
+.liste.kino .m { grid-column: 1; }
 
 .feedback { background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r-card); padding: 16px 20px; font-size: 15px; }
 .feedback p { margin: 0; }
@@ -107,6 +109,7 @@ footer { color: var(--muted); font-size: 13px; }
   </header>
   <section aria-labelledby="h-top"><h2 id="h-top">Die besten drei</h2><div class="top" id="top"></div></section>
   <section aria-labelledby="h-mehr" id="mehr-sec"><h2 id="h-mehr">Außerdem</h2><ul class="liste" id="mehr"></ul></section>
+  <section aria-labelledby="h-kino" id="kino-sec" hidden><h2 id="h-kino">🎬 Kinderkino</h2><ul class="liste kino" id="kino"></ul></section>
   <div class="feedback"><p id="feedback-text"><strong>Wie war's?</strong> Sag Jochen Bescheid, z. B. „1 war super, 3 zu voll“. Die Tipps werden jede Woche neu gesucht und lernen aus dem Feedback.</p></div>
   <details id="archiv-box"><summary>Frühere Wochenenden</summary><div class="archiv" id="archiv"></div></details>
   <footer id="stand"></footer>
@@ -233,7 +236,45 @@ footer { color: var(--muted); font-size: 13px; }
    }
   ],
   "stand": "Sa 17.10.2026, 9:30 Uhr",
-  "quellen": "volksfest-berlin, berlin.de, kinderkulturkalender, dayt, parkeisenbahn.de, technikmuseum.berlin, BerlinMagazine, WebSearch; Wetter Open-Meteo"
+  "quellen": "volksfest-berlin, berlin.de, kinderkulturkalender, dayt, parkeisenbahn.de, technikmuseum.berlin, BerlinMagazine, WebSearch; Wetter Open-Meteo",
+  "kino": [
+   {
+    "wann": "Sa 14:15 und 17:00 · So 12:15, 14:15 und 16:15",
+    "titel": "Shaun das Schaf – Spuk im Kürbisfeld",
+    "ort": "Moviemento, Kottbusser Damm 22 (Kreuzberg, nah)",
+    "kosten": "Preis bei Kinoheld",
+    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/"
+   },
+   {
+    "wann": "Sa 10:30 und 14:30 · So 12:00 und 14:30",
+    "titel": "Bibi Blocksberg – Die total verhexte Zeitreise",
+    "ort": "Moviemento, Kreuzberg",
+    "kosten": "Preis bei Kinoheld",
+    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/"
+   },
+   {
+    "wann": "Sa 12:30 und 16:15 · So 14:00",
+    "titel": "Monster Mia",
+    "ort": "Moviemento, Kreuzberg",
+    "kosten": "Preis bei Kinoheld",
+    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/"
+   },
+   {
+    "wann": "Sa 14:30",
+    "titel": "Lilly und die Kängurus",
+    "ort": "Moviemento, Kreuzberg",
+    "kosten": "Preis bei Kinoheld",
+    "link": "https://www.kinoheld.de/kino/berlin/moviemento-kino/"
+   },
+   {
+    "wann": "So 11:00",
+    "titel": "Spatzenkino am Wochenende: Zu Hause im Herbst (kurze Filme, ca. 45 Min)",
+    "ort": "Toni, Antonplatz 1 (Weißensee, weiter weg)",
+    "kosten": "3,30 €",
+    "link": "https://dayt.events/event/spatzenkino-am-wochenende-klingende-geschichten-d-ab-0-dayt-46789",
+    "hinweis": "eher für Kleinere, sehr sanft"
+   }
+  ]
  },
  "archiv": [
   {
@@ -315,6 +356,15 @@ footer { color: var(--muted); font-size: 13px; }
     li.appendChild(el('span', 'm', meta)); mehr.appendChild(li);
   });
   if (!(a.weitere || []).length) document.getElementById('mehr-sec').hidden = true;
+  var kino = document.getElementById('kino');
+  (a.kino || []).forEach(function (t) {
+    var li = el('li');
+    var ti = el('span', 't'); if (t.link) ti.appendChild(link(t.link, null, t.titel)); else ti.textContent = t.titel; li.appendChild(ti);
+    var meta = [t.wann, t.ort, t.kosten].filter(Boolean).join(' · ');
+    if (t.hinweis) meta += ' · ' + t.hinweis;
+    li.appendChild(el('span', 'm', meta)); kino.appendChild(li);
+  });
+  if ((a.kino || []).length) document.getElementById('kino-sec').hidden = false;
   var ar = document.getElementById('archiv');
   (d.archiv || []).forEach(function (w) {
     var b = el('div'); b.appendChild(el('h4', null, w.titel)); var ul = el('ul');
