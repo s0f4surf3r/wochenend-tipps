@@ -95,6 +95,8 @@ section { display: grid; gap: 16px; }
 .liste .m { grid-column: 2; color: var(--muted); font-size: 15px; }
 .liste.kino li { grid-template-columns: minmax(0, 1fr); }
 .liste.kino .m { grid-column: 1; }
+.liste.kino .zeiten { display: grid; gap: 2px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tag-reihe { padding-bottom: 10px; border-bottom: 1px solid var(--line); }
 
 .feedback { background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r-card); padding: 16px 20px; font-size: 15px; }
 .feedback p { margin: 0; }
@@ -128,7 +130,7 @@ footer { color: var(--muted); font-size: 13px; }
     <h1 id="titel">Lade Tipps …</h1>
     <div class="wetter" id="wetter"></div>
   </header>
-  <nav class="filter" id="filter" aria-label="Tipps filtern" hidden><div class="filter-reihe" id="filter-reihe"></div><p class="filter-info" id="filter-info" aria-live="polite"></p></nav>
+  <nav class="filter" id="filter" aria-label="Tipps filtern" hidden><div class="filter-reihe tag-reihe" id="tag-reihe" role="group" aria-label="Tag" hidden></div><div class="filter-reihe" id="filter-reihe"></div><p class="filter-info" id="filter-info" aria-live="polite"></p></nav>
   <section aria-labelledby="h-top" id="top-sec"><h2 id="h-top">Die besten drei</h2><div class="top" id="top"></div></section>
   <section aria-labelledby="h-mehr" id="mehr-sec"><h2 id="h-mehr">Außerdem</h2><ul class="liste" id="mehr"></ul></section>
   <section aria-labelledby="h-kino" id="kino-sec" hidden><h2 id="h-kino">🎬 Kinderkino</h2><ul class="liste kino" id="kino"></ul></section>
@@ -503,12 +505,28 @@ footer { color: var(--muted); font-size: 13px; }
     if (t.reiz) c.appendChild(el('span', 'chip reiz ' + t.reiz, REIZ[t.reiz] || t.reiz));
     return c;
   }
+  // Tag aus "wann" ableiten: "Sa …" → sa, "So …" → so, beides oder keins (z. B. "jederzeit") → beide
+  function tage(t) {
+    if (t.tage && t.tage.length) return t.tage;
+    var w = t.wann || '', sa = /\bSa\b/.test(w), so = /\bSo\b/.test(w);
+    return sa || so ? [sa && 'sa', so && 'so'].filter(Boolean) : ['sa', 'so'];
+  }
+  // Bei gewähltem Tag nur die passenden Zeitangaben zeigen ("Sa 14 Uhr · So 12 Uhr" → "So 12 Uhr")
+  function zeiten(t, tag) {
+    var teile = (t.wann || '').split(' · ');
+    if (!tag) return teile;
+    var anders = tag === 'sa' ? /\bSo\b/ : /\bSa\b/, eigen = tag === 'sa' ? /\bSa\b/ : /\bSo\b/;
+    var rest = teile.filter(function (s) { return eigen.test(s) || !anders.test(s); });
+    return rest.length ? rest : teile;
+  }
+  var eintraege = [];
   var top = document.getElementById('top');
   (a.top || []).forEach(function (t) {
     var k = el('article', 'karte');
     var kopf = el('div', 'kopf'); kopf.appendChild(el('div', 'nr', t.nr));
     var tt = el('div'); tt.style.minWidth = '0';
-    tt.appendChild(el('div', 'wann', t.wann)); tt.appendChild(el('h3', null, t.titel)); kopf.appendChild(tt); k.appendChild(kopf);
+    var wann = el('div', 'wann', t.wann);
+    tt.appendChild(wann); tt.appendChild(el('h3', null, t.titel)); kopf.appendChild(tt); k.appendChild(kopf);
     if (t.ort) k.appendChild(el('p', 'ort', t.ort));
     k.appendChild(chips(t));
     if (t.warum) k.appendChild(el('p', 'warum', t.warum));
@@ -519,26 +537,37 @@ footer { color: var(--muted); font-size: 13px; }
     if (t.adresse) ak.appendChild(link('https://www.google.com/maps/dir/?api=1&travelmode=bicycling&destination=' + encodeURIComponent(t.adresse), 'btn', 'Route mit dem Rad'));
     k.appendChild(ak);
     top.appendChild(k);
+    eintraege.push({ el: k, t: t, liste: 'top', zeige: function (tag) { wann.textContent = zeiten(t, tag).join(' · '); } });
   });
   var mehr = document.getElementById('mehr');
   (a.weitere || []).forEach(function (t) {
     var li = el('li'); li.appendChild(el('span', 'n', t.nr));
     var ti = el('span', 't'); if (t.link) ti.appendChild(link(t.link, null, t.titel)); else ti.textContent = t.titel; li.appendChild(ti);
-    var meta = [t.wann, t.ort, t.kosten].filter(Boolean).join(' · ');
-    if (t.hinweis) meta += ' · ⚠ ' + t.hinweis;
-    li.appendChild(el('span', 'm', meta)); mehr.appendChild(li);
+    var m = el('span', 'm'); li.appendChild(m); mehr.appendChild(li);
+    var zeige = function (tag) {
+      var meta = [zeiten(t, tag).join(' · '), t.ort, t.kosten].filter(Boolean).join(' · ');
+      m.textContent = t.hinweis ? meta + ' · ⚠ ' + t.hinweis : meta;
+    };
+    zeige(null);
+    eintraege.push({ el: li, t: t, liste: 'mehr', zeige: zeige });
   });
   if (!(a.weitere || []).length) document.getElementById('mehr-sec').hidden = true;
+  // Kino: Zeiten pro Tag in eigener Zeile, damit Sa und So gleich sichtbar sind
   var kino = document.getElementById('kino');
   (a.kino || []).forEach(function (t) {
     var li = el('li');
     var ti = el('span', 't'); if (t.link) ti.appendChild(link(t.link, null, t.titel)); else ti.textContent = t.titel; li.appendChild(ti);
-    var meta = [t.wann, t.ort, t.kosten].filter(Boolean).join(' · ');
-    if (t.hinweis) meta += ' · ' + t.hinweis;
-    li.appendChild(el('span', 'm', meta)); kino.appendChild(li);
+    var z = el('span', 'zeiten'); li.appendChild(z);
+    var meta = [t.ort, t.kosten].filter(Boolean).join(' · ');
+    if (t.hinweis) meta += (meta ? ' · ' : '') + t.hinweis;
+    if (meta) li.appendChild(el('span', 'm', meta));
+    kino.appendChild(li);
+    var zeige = function (tag) { z.textContent = ''; zeiten(t, tag).forEach(function (s) { z.appendChild(el('span', null, s)); }); };
+    zeige(null);
+    eintraege.push({ el: li, t: t, liste: 'kino', zeige: zeige });
   });
   if ((a.kino || []).length) document.getElementById('kino-sec').hidden = false;
-  // Filter: Schlagworte aus "tags" plus automatisch aus Kosten, Reiz und Weg
+  // Filter: Tag (Sa/So) plus Schlagworte aus "tags" und automatisch aus Kosten, Reiz und Weg
   var FILTER = [['kostenlos','Kostenlos'],['sport','Sportlich'],['ruhig','Ruhig'],['laut','Laut'],['drinnen','Drinnen'],['draussen','Draußen'],['nah','Nah'],['rollt','Züge & Rollen'],['musik','Musik'],['neu','Neu entdecken']];
   function schlagworte(t) {
     var s = (t.tags || []).slice();
@@ -548,31 +577,47 @@ footer { color: var(--muted); font-size: 13px; }
     if (/neu entdecken/i.test(t.hinweis || '')) s.push('neu');
     return s;
   }
-  var eintraege = [];
-  [['top', a.top], ['mehr', a.weitere], ['kino', a.kino]].forEach(function (paar) {
-    var kinder = document.getElementById(paar[0]).children;
-    (paar[1] || []).forEach(function (t, i) { if (kinder[i]) eintraege.push({ el: kinder[i], s: schlagworte(t), liste: paar[0] }); });
-  });
-  var aktiv = [];
-  var reihe = document.getElementById('filter-reihe'), info = document.getElementById('filter-info');
+  eintraege.forEach(function (e) { e.s = schlagworte(e.t); e.tage = tage(e.t); });
+  var aktiv = [], tag = null;
+  var reihe = document.getElementById('filter-reihe'), tagReihe = document.getElementById('tag-reihe'), info = document.getElementById('filter-info');
   var vorhanden = FILTER.filter(function (f) { return eintraege.some(function (e) { return e.s.indexOf(f[0]) >= 0; }); });
   function anwenden() {
     var n = 0;
     eintraege.forEach(function (e) {
-      var ok = aktiv.every(function (k) { return e.s.indexOf(k) >= 0; });
+      var ok = aktiv.every(function (k) { return e.s.indexOf(k) >= 0; }) && (!tag || e.tage.indexOf(tag) >= 0);
       e.el.hidden = !ok; if (ok) n++;
+      e.zeige(tag);
     });
     [['top', 'top-sec'], ['mehr', 'mehr-sec'], ['kino', 'kino-sec']].forEach(function (p) {
       var sec = document.getElementById(p[1]), hat = eintraege.some(function (e) { return e.liste === p[0]; });
       if (hat) sec.hidden = !eintraege.some(function (e) { return e.liste === p[0] && !e.el.hidden; });
     });
     info.textContent = '';
-    if (aktiv.length) {
+    if (aktiv.length || tag) {
       info.appendChild(document.createTextNode(n ? n + ' von ' + eintraege.length + ' Tipps passen · ' : 'Nichts passt zu dieser Kombination · '));
       var b = el('button', null, 'alle zeigen'); b.type = 'button';
-      b.onclick = function () { aktiv = []; Array.prototype.forEach.call(reihe.children, function (c) { c.setAttribute('aria-pressed', 'false'); }); anwenden(); };
+      b.onclick = function () {
+        aktiv = []; tag = null;
+        Array.prototype.forEach.call(reihe.children, function (c) { c.setAttribute('aria-pressed', 'false'); });
+        Array.prototype.forEach.call(tagReihe.children, function (c, i) { c.setAttribute('aria-pressed', i === 0 ? 'true' : 'false'); });
+        anwenden();
+      };
       info.appendChild(b);
     }
+  }
+  var hatSa = eintraege.some(function (e) { return e.tage.indexOf('sa') >= 0; }), hatSo = eintraege.some(function (e) { return e.tage.indexOf('so') >= 0; });
+  if (hatSa && hatSo) {
+    [[null, 'Beide Tage'], ['sa', 'Samstag'], ['so', 'Sonntag']].forEach(function (f, i) {
+      var b = el('button', 'fchip', f[1]); b.type = 'button'; b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+      b.onclick = function () {
+        tag = f[0];
+        Array.prototype.forEach.call(tagReihe.children, function (c) { c.setAttribute('aria-pressed', c === b ? 'true' : 'false'); });
+        anwenden();
+      };
+      tagReihe.appendChild(b);
+    });
+    tagReihe.hidden = false;
+    document.getElementById('filter').hidden = false;
   }
   if (vorhanden.length > 1) {
     vorhanden.forEach(function (f) {
