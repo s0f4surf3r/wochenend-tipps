@@ -625,6 +625,14 @@ footer { color: var(--muted); font-size: 13px; }
     });
     tagReihe.hidden = false;
     document.getElementById('filter').hidden = false;
+    // Am Wochenende selbst gleich den heutigen Tag zeigen – nur wenn die Seite zu diesem Wochenende gehört
+    try {
+      var heute = new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', weekday: 'short', day: 'numeric' }).formatToParts(new Date());
+      var wt = heute.filter(function (p) { return p.type === 'weekday'; })[0].value.slice(0, 2);
+      var nr = +heute.filter(function (p) { return p.type === 'day'; })[0].value;
+      var m = (a.titel || '').match(new RegExp('\\b' + wt + ' (\\d+)\\.'));
+      if ((wt === 'Sa' || wt === 'So') && m && +m[1] === nr) tagReihe.children[wt === 'Sa' ? 1 : 2].click();
+    } catch (e) {}
   }
   if (vorhanden.length > 1) {
     vorhanden.forEach(function (f) {
