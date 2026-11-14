@@ -134,6 +134,7 @@ footer { color: var(--muted); font-size: 13px; }
   <section aria-labelledby="h-top" id="top-sec"><h2 id="h-top">Die besten drei</h2><div class="top" id="top"></div></section>
   <section aria-labelledby="h-mehr" id="mehr-sec"><h2 id="h-mehr">Außerdem</h2><ul class="liste" id="mehr"></ul></section>
   <section aria-labelledby="h-kino" id="kino-sec" hidden><h2 id="h-kino">🎬 Kinderkino</h2><ul class="liste kino" id="kino"></ul></section>
+  <section aria-labelledby="h-weihnacht" id="weihnacht-sec" hidden><h2 id="h-weihnacht">🎄 Bis Weihnachten</h2><ul class="liste kino" id="weihnacht"></ul></section>
   <div class="feedback"><p id="feedback-text"><strong>Wie war's?</strong> Sag Jochen Bescheid, z. B. „1 war super, 3 zu voll“. Die Tipps werden jede Woche neu gesucht und lernen aus dem Feedback.</p></div>
   <details id="archiv-box"><summary>Frühere Wochenenden</summary><div class="archiv" id="archiv"></div></details>
   <footer id="stand"></footer>
@@ -336,6 +337,48 @@ footer { color: var(--muted); font-size: 13px; }
     ]
    }
   ],
+  "bisweihnachten": [
+   {
+    "titel": "Die Weihnachtsbäckerei – Das Musical (mit den Liedern von Rolf Zuckowski)",
+    "wann": "27.11.–27.12.2026 · Fr 15:30 Uhr · Sa 11, 14 und 17 Uhr · So 11 und 14 Uhr",
+    "ort": "PUNCH L!NE Club Berlin, Marlene-Dietrich-Platz 1, Tiergarten",
+    "kosten": "ab 36,90 € · ab 4 Jahren · 75 Min. ohne Pause",
+    "link": "https://punchlineberlin.com/de/shows/weihnachtsbackerei",
+    "hinweis": "vom Plakat-Foto recherchiert · nicht kostenlos, aber als Highlight bis Weihnachten dabei"
+   },
+   {
+    "titel": "Weihnachtskonzert mit Kinderchor Flora – Kaiser-Wilhelm-Gedächtniskirche",
+    "wann": "Mi 2.12.2026, 19 Uhr",
+    "ort": "Breitscheidplatz, Charlottenburg",
+    "kosten": "Eintritt frei, Spende erbeten",
+    "link": "https://www.gedaechtniskirche-berlin.de/veranstaltungen/detailseite/24459183",
+    "hinweis": "19 Uhr an einem Mittwoch – für Levi eher spät, Spenden-Modell nicht wortwörtlich auf der Eventseite bestätigt"
+   },
+   {
+    "titel": "Musik bei Kerzenschein – St. Marienkirche am Alexanderplatz",
+    "wann": "Do 3., 10. und 17.12.2026, je 19 Uhr",
+    "ort": "Karl-Liebknecht-Straße 8, Mitte",
+    "kosten": "Kinder & Jugendliche frei · Erwachsene 10 €, ermäßigt 5 €",
+    "link": "https://marienkirche-berlin.de/musik-bei-kerzenschein-2/",
+    "hinweis": "19 Uhr an einem Schultag – 17.12. („Ceremony of Carols“ mit Harfe) am kindgerechtesten"
+   },
+   {
+    "titel": "Weihnachtskonzert der Joyful Singers – Zwölf-Apostel-Kirche",
+    "wann": "Sa 5.12.2026, 17 Uhr",
+    "ort": "An der Apostelkirche 1, Schöneberg",
+    "kosten": "Tickets bis 19 €",
+    "link": "https://joyfulsingersberlin.de/event/1-weihnachtskonzert-2026-zwoelf-apostel-kirche/",
+    "hinweis": "Gospel, fröhlich, Samstagnachmittag gut planbar"
+   },
+   {
+    "titel": "Krippenspiele an Heiligabend (mehrere Kirchen)",
+    "wann": "Mi 24.12.2026, nachmittags (z. B. Friedenskirche Charlottenburg 11/15/16:30 Uhr, Hochmeisterkirche Wilmersdorf 15 Uhr, Dorfkirche Rudow 14:30 Uhr, Ev. Johannesstift Spandau 15 Uhr)",
+    "ort": "verschiedene Berliner Kirchen",
+    "kosten": "kostenlos (normaler Gottesdienst)",
+    "link": "https://www.berlin-evangelisch.de/heiligabend-berlin-christvespern-gottesdienste-und-krippenspiele",
+    "hinweis": "nur eine Auswahl – stadtweit gibt es noch mehr, eigene Kirche/Kiez vorher checken"
+   }
+  ],
   "stand": "Do 12.11.2026, 18:15 Uhr",
   "quellen": "berlin.de, kinderkulturkalender, visitberlin, volksfest-berlin, parkeisenbahn.de, lichtenberger-winterzeit.de, hoefekino.de, moviemento.de, spatzenkino.de, technikmuseum.berlin, Newsletter-Termine, WebSearch; Wetter met.no. Nicht erreichbar: berlinmitkind.de (403), dayt.events (429), Luma-API Kinder Rave (429), Open-Meteo (Limit), museumsportal (403)"
  },
@@ -512,6 +555,18 @@ footer { color: var(--muted); font-size: 13px; }
     eintraege.push({ el: li, t: t, liste: 'kino', zeige: zeige });
   });
   if ((a.kino || []).length) document.getElementById('kino-sec').hidden = false;
+  // "Bis Weihnachten": längerfristige Tipps (laufende Shows, Konzert-Termine über mehrere Wochen bis 24./25.12.),
+  // bewusst NICHT Teil des Sa/So-Wochentag-Filters oben – die Einträge gelten nicht nur für das aktuelle Wochenende.
+  var weihnacht = document.getElementById('weihnacht');
+  (a.bisweihnachten || []).forEach(function (t) {
+    var li = el('li');
+    var ti = el('span', 't'); if (t.link) ti.appendChild(link(t.link, null, t.titel)); else ti.textContent = t.titel; li.appendChild(ti);
+    var meta = [t.wann, t.ort, t.kosten].filter(Boolean).join(' · ');
+    if (t.hinweis) meta += (meta ? ' · ' : '') + '⚠ ' + t.hinweis;
+    if (meta) li.appendChild(el('span', 'm', meta));
+    weihnacht.appendChild(li);
+  });
+  if ((a.bisweihnachten || []).length) document.getElementById('weihnacht-sec').hidden = false;
   // Filter: Tag (Sa/So) plus Schlagworte aus "tags" und automatisch aus Kosten, Reiz und Weg
   var FILTER = [['kostenlos','Kostenlos'],['sport','Sportlich'],['ruhig','Ruhig'],['laut','Laut'],['drinnen','Drinnen'],['draussen','Draußen'],['nah','Nah'],['rollt','Züge & Rollen'],['musik','Musik'],['neu','Neu entdecken']];
   function schlagworte(t) {
